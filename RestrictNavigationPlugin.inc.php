@@ -56,27 +56,22 @@ class RestrictNavigationPlugin extends GenericPlugin {
 
         $menu = (array) $templateManager->getState('menu'); #https://github.com/pkp/ops/blob/7a4563933cb965ddad2e2ac2cfab4da9f20ac7a2/pages/authorDashboard/AuthorDashboardHandler.php
 
-        if (!in_array([ROLE_ID_SITE_ADMIN], $userRoles)) {
-        #if ($this->isUserAdmin($context, $currentUser, $userRoles)) {
+        #if (!in_array([ROLE_ID_SITE_ADMIN], $userRoles)) {
+        if ($this->isNotUserAdmin($context, $currentUser)) {
             unset($menu['tools']);
             #unset($menu['settings']);
         }
         $templateManager->setState(['menu' => $menu]);
     }
     
-    public function isUserAdmin($context, $currentUser, $userRoles){
-        if ($currentUser && !empty(in_array($userRoles, [ROLE_ID_SITE_ADMIN]))) {
-            $userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-            $userGroup = $userGroupDao->getByUserId($currentUser->getId(), $context ->getId()); #https://github.com/pkp/jatsTemplate/blob/3778ed29edd396334a2ceb98edbffa37af621dff/JatsTemplateDownloadHandler.php
-            if (in_array($userGroup->getRoleId(), [ROLE_ID_SITE_ADMIN])) { #https://github.com/pkp/citationStyleLanguage/blob/7f6233729419cf69d3d68c4e42094f4088865eea/pages/CitationStyleLanguageHandler.inc.php
-                return true;
-            }
+    public function isNotUserAdmin($context, $currentUser){
+        $roleDao = DAORegistry::getDAO('RoleDAO');
+        $isAdmin = $roleDao->userHasRole($context->getId(), $currentUser->getId(), ROLE_ID_SITE_ADMIN);  #https://github.com/pkp/ojs/blob/6ef85db1640f441da5ae95e5af632c40e2970c05/classes/submission/form/SubmissionSubmitStep1Form.php
+        if ($isAdmin) {
+            return false;
         }
-        #if ($currentUser && count(in_array([ROLE_ID_SITE_ADMIN], $userRoles))){
-         #   return true;
-        #}
-        return false;
-    }
+        return true;
+        }
 
     /**
      * Provide a name for this plugin
