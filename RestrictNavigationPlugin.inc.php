@@ -55,6 +55,17 @@ class RestrictNavigationPlugin extends GenericPlugin {
         $userRoles = (array) $handler->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES); #from https://github.com/pkp/ojs/blob/main/classes/template/TemplateManager.php
 
         $menu = (array) $templateManager->getState('menu'); #https://github.com/pkp/ops/blob/7a4563933cb965ddad2e2ac2cfab4da9f20ac7a2/pages/authorDashboard/AuthorDashboardHandler.php
+        
+        $roleDao = DAORegistry::getDAO('RoleDAO');
+        $roles = $roleDao->getByUserId($currentUser->getId());
+        foreach ($roles as $role) {
+            echo($role->getRoleId(). " ");
+            if (in_array($role->getRoleId(), [ROLE_ID_SITE_ADMIN])) {
+                echo("true");
+            }
+            echo("false");
+        }
+        echo(ROLE_ID_SITE_ADMIN);
 
         #if (!in_array([ROLE_ID_SITE_ADMIN], $userRoles)) {
         if ($this->isNotUserAdmin($context, $currentUser)) {
