@@ -64,6 +64,19 @@ class RestrictNavigationPlugin extends GenericPlugin {
         $templateManager->setState(['menu' => $menu]);
     }
     
+    public function isUserAdmin($context, $currentUser, $userRoles){
+        if ($currentUser && !empty(in_array($userRoles, [ROLE_ID_SITE_ADMIN]))) {
+            $userGroupDao = DAORegistry::getDAO('UserGroupDAO');
+            $userGroup = $userGroupDao->getByUserId($currentUser->getId(), $context ->getId()); #https://github.com/pkp/jatsTemplate/blob/3778ed29edd396334a2ceb98edbffa37af621dff/JatsTemplateDownloadHandler.php
+            if (in_array($userGroup->getRoleId(), [ROLE_ID_SITE_ADMIN])) { #https://github.com/pkp/citationStyleLanguage/blob/7f6233729419cf69d3d68c4e42094f4088865eea/pages/CitationStyleLanguageHandler.inc.php
+                return true;
+            }
+        }
+        #if ($currentUser && count(in_array([ROLE_ID_SITE_ADMIN], $userRoles))){
+         #   return true;
+        #}
+        return false;
+    }
 
     /**
      * Provide a name for this plugin
