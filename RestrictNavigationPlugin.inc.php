@@ -50,8 +50,8 @@ class RestrictNavigationPlugin extends GenericPlugin {
         $context = $request->getContext(); #https://docs.pkp.sfu.ca/dev/documentation/en/architecture
         $templateManager = TemplateManager::getManager($request);
 
-        $router = $request->getRouter(); #?
-        $handler = $router->getHandler(); #?
+        $router = $request->getRouter(); 
+        $handler = $router->getHandler(); 
         $userRoles = (array) $handler->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES); #from https://github.com/pkp/ojs/blob/main/classes/template/TemplateManager.php
 
         $menu = (array) $templateManager->getState('menu'); #https://github.com/pkp/ops/blob/7a4563933cb965ddad2e2ac2cfab4da9f20ac7a2/pages/authorDashboard/AuthorDashboardHandler.php
