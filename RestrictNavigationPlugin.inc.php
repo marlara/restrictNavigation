@@ -56,14 +56,14 @@ class RestrictNavigationPlugin extends GenericPlugin {
 
         $menu = (array) $templateManager->getState('menu'); #https://github.com/pkp/ops/blob/7a4563933cb965ddad2e2ac2cfab4da9f20ac7a2/pages/authorDashboard/AuthorDashboardHandler.php
         
-        $roleDao = DAORegistry::getDAO('RoleDAO');
-
-        
-        if (!$this->isUserAdmin($userRoles)) {
-            unset($menu['tools']);
-            unset($menu['settings']);
+        if ($context){
+            if (!$this->isUserAdmin($userRoles)) {
+                unset($menu['tools']);
+                unset($menu['settings']);
+            }
+            $templateManager->setState(['menu' => $menu]);
         }
-        $templateManager->setState(['menu' => $menu]);
+        
     }
     
     public function isUserAdmin($userRoles){
