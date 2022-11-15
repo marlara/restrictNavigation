@@ -49,7 +49,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
         $currentUser = $request->getUser(); #https://docs.pkp.sfu.ca/dev/documentation/3.3/en/architecture-authentication
         $context = $request->getContext(); #https://docs.pkp.sfu.ca/dev/documentation/en/architecture
         $templateManager = TemplateManager::getManager($request);
-        
+
         $router = $request->getRouter(); #?
         $handler = $router->getHandler(); #?
         $userRoles = (array) $handler->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES); #from https://github.com/pkp/ojs/blob/main/classes/template/TemplateManager.php
@@ -57,33 +57,20 @@ class RestrictNavigationPlugin extends GenericPlugin {
         $menu = (array) $templateManager->getState('menu'); #https://github.com/pkp/ops/blob/7a4563933cb965ddad2e2ac2cfab4da9f20ac7a2/pages/authorDashboard/AuthorDashboardHandler.php
         
         $roleDao = DAORegistry::getDAO('RoleDAO');
-        $roles = $roleDao->getByUserId($currentUser->getId(), $context);
-        
-        foreach ($roles as $role) {
-            print_r($role->getRoleId());
-            echo(" and ");
-           if (in_array($role->getRoleId(), [ROLE_ID_SITE_ADMIN])) {
-                echo("true ");
-            }
-            echo("false ");
-        }
-        echo(ROLE_ID_SITE_ADMIN);
 
         
-        if (!$this->isNotUserAdmin($context, $currentUser)) {
+        if (!$this->isUserAdmin($userRoles)) {
             unset($menu['tools']);
             unset($menu['settings']);
         }
         $templateManager->setState(['menu' => $menu]);
     }
     
-    public function isNotUserAdmin($context, $currentUser){
-        $roleDao = DAORegistry::getDAO('RoleDAO');
-        $isAdmin = $roleDao->userHasRole($context->getId(), $currentUser->getId(), ROLE_ID_SITE_ADMIN);  #https://github.com/pkp/ojs/blob/6ef85db1640f441da5ae95e5af632c40e2970c05/classes/submission/form/SubmissionSubmitStep1Form.php
-        if ($isAdmin) {
-            return false;
+    public function isUserAdmin($userRoles){
+        if (in_array(ROLE_ID_SITE_ADMIN, $userRoles)) {
+            return true;
         }
-        return true;
+        return false;
         }
 
     /**
