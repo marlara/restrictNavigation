@@ -34,9 +34,9 @@
            <tbody>
                <tr>
                    <th scope="row">{translate key="plugins.generic.restrictNavigation.setting.onlyAdmin"}</th>
-                   <td><input type="checkbox" name="generalSettings" value="generalSettings" checked=$general_settings></td>
-                   <td><input type="checkbox" name="tools" value="tools" checked=$tools></td>
-                   <td><input type="checkbox" name="workflow" value="workflow" checked=$workflow></td>
+                   <td><input type="checkbox" name="generalSettings" value="generalSettings" {if !empty($generalSettings)}checked="checked"{/if}></td>
+                   <td><input type="checkbox" name="tools" value="tools" {if !empty($tools)}checked="checked"{/if}></td>
+                   <td><input type="checkbox" name="workflow" value="workflow" {if !empty($workflow)}checked="checked"{/if}></td>
                </tr>
            </tbody>
        </table>

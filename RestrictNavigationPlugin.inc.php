@@ -42,6 +42,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
 
         // Get the existing actions
             $actions = parent::getActions($request, $actionArgs);
+            // Only add the settings action when the plugin is enabled
             if (!$this->getEnabled()) {
                 return $actions;
             }
@@ -90,22 +91,22 @@ class RestrictNavigationPlugin extends GenericPlugin {
           // settings form
           case 'settings':
             // Load the custom form
-        $this->import('RestrictNavigationSettingsForm');
-        $form = new RestrictNavigationSettingsForm($this);
+            $this->import('RestrictNavigationSettingsForm');
+            $form = new RestrictNavigationSettingsForm($this);
 
-        // Fetch the form the first time it loads, before
-        // the user has tried to save it
-        if (!$request->getUserVar('save')) {
-          $form->initData();
-				  return new JSONMessage(true, $form->fetch($request));
-        }
+            // Fetch the form the first time it loads, before
+            // the user has tried to save it
+            if (!$request->getUserVar('save')) {
+                    $form->initData();
+                    return new JSONMessage(true, $form->fetch($request));
+                }
 
-        // Validate and execute the form
-        $form->readInputData();
-        if ($form->validate()) {
-          $form->execute();
-          return new JSONMessage(true);
-        }
+            // Validate and execute the form
+            $form->readInputData();
+            if ($form->validate()) {
+                $form->execute();
+                return new JSONMessage(true);
+            }
 		}
 		return parent::manage($args, $request);
 	}
