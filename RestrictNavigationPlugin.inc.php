@@ -33,7 +33,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
 	}
 
     /**
-     * Settings 
+     * Settings: add a getActions() method to your plugin to add a settings action in the plugin list.
      * 
      * 
      */
@@ -79,18 +79,36 @@ class RestrictNavigationPlugin extends GenericPlugin {
             return $actions;
         }
 
+        /**
+         * Settings: add a manage() method to load a settings form when the LinkAction is clicked.
+         */
+
         public function manage($args, $request) {
             switch ($request->getUserVar('verb')) {
     
           // Return a JSON response containing the
           // settings form
           case 'settings':
-            $templateMgr = TemplateManager::getManager($request);
-            $settingsForm = $templateMgr->fetch($this->getTemplateResource('settings.tpl'));
-            return new JSONMessage(true, $settingsForm);
-            }
-            return parent::manage($args, $request);
+            // Load the custom form
+        $this->import('RestrictNavigationSettingsForm');
+        $form = new RestrictNavigationSettingsForm($this);
+
+        // Fetch the form the first time it loads, before
+        // the user has tried to save it
+        if (!$request->getUserVar('save')) {
+          $form->initData();
+				  return new JSONMessage(true, $form->fetch($request));
         }
+
+        // Validate and execute the form
+        $form->readInputData();
+        if ($form->validate()) {
+          $form->execute();
+          return new JSONMessage(true);
+        }
+		}
+		return parent::manage($args, $request);
+	}
     
 
     /**
@@ -117,10 +135,28 @@ class RestrictNavigationPlugin extends GenericPlugin {
 
         $menu = (array) $templateManager->getState('menu'); #https://github.com/pkp/ops/blob/7a4563933cb965ddad2e2ac2cfab4da9f20ac7a2/pages/authorDashboard/AuthorDashboardHandler.php
         
+        $generalSettings = $this->getSetting($context->getId(), 'generalSettings'); #if geneeralSettings is checked in the Settings form
+        $tools = $this->getSetting($context->getId(), 'tools'); #if tools is checked in the Settings form
+        $workflow = $this->getSetting($context->getId(), 'workflow'); #if workflow is checked in the Settings form
+
         if ($context){
-            if (!$this->isUserAdmin($userRoles)) {
-                unset($menu['tools']);
-                unset($menu['settings']);
+            if ($tools){
+                if (!$this->isUserAdmin($userRoles)) {
+                    unset($menu['tools']);
+                }
+            }
+            if ($workflow){
+                if (!$this->isUserAdmin($userRoles)) {
+                    unset($menu['settings']['workflow']);
+                }
+            }
+            if ($generalSettings){
+                if (!$this->isUserAdmin($userRoles)) {
+                    unset($menu['settings']['context']);
+                    unset($menu['settings']['website']);
+                    unset($menu['settings']['distribution']);
+                    unset($menu['settings']['access']);
+                }
             }
             $templateManager->setState(['menu' => $menu]);
         }
