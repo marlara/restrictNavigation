@@ -9,7 +9,7 @@
  * Distributed under the GNU GPL v3. For full terms see the file LICENSE.
  *
  * @ingroup plugins_generic_restrictNavigation
- * @brief Wrapper for the Control Public Files plugin.
+ * @brief Wrapper for the RestrictNavigation plugin.
  *
  */
 

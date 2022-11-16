@@ -1,15 +1,15 @@
 <?php
 
 /**
-* @file plugins/generic/restrictNavigatoin/RestrictNavigationPlugin.inc.php
+* @file plugins/generic/restrictNavigation/RestrictNavigationPlugin.inc.php
  *
  * Copyright Lara Marziali
  * Distributed under the GNU GPL v3. For full terms see the file LICENSE.
  *
- * @class RestrictNavigatoinPlugin
+ * @class RestrictNavigationPlugin
  * @ingroup plugins_generic_RestrictNavigation
  *
- * @brief Plugin class for the RestrictNavigation plugin.
+ * @brief Restric the Navigation of the backend by user roles.
  */
 
 import('lib.pkp.classes.template.PKPTemplateManager');
@@ -27,7 +27,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
 		$success = parent::register($category, $path, $mainContextId);
 		if ($success && $this->getEnabled($mainContextId)) {
 
-			HookRegistry::register('TemplateManager::setupBackendPage', [$this, 'restrictNavigation']);
+			HookRegistry::register('TemplateManager::setupBackendPage', [$this, 'restrictBackendPage']);
         }
 		return $success;
 	}
@@ -37,7 +37,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
      * 
      */
 
-    public function restrictNavigation($hookName, $args)
+    public function restrictBackendPage($hookName, $args)
     {
         /**
          * @copydoc TemplateManager::setupBackendPage()
