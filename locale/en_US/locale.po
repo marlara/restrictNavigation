@@ -16,3 +16,23 @@ msgstr "Restric Navigation"
 
 msgid "plugins.generic.restrictNavigation.description"
 msgstr "Restrict the visualization of Settings and Tools in the Navigation menu backend only to the Site Admin."
+
+msgid "plugins.generic.restrictNavigation.setting.description"
+msgstr ""
+"\n"
+"\t\t<p>Enable the restriction in the backend.</p>\n"
+"\t\t<p>Check if you want that the relative section can be seen only by the Site Admin.\n"
+"\t\tIf not checked the Journal Manager, Journal Editor and Production editor\n"
+"\t\t\tcan view and manage the section.</p>"
+
+msgid "plugins.generic.restrictNavigation.setting.generalSettings"
+msgstr "General Settings"
+
+msgid "plugins.generic.restrictNavigation.setting.tools"
+msgstr "Tools"
+
+msgid "plugins.generic.restrictNavigation.setting.workflow"
+msgstr "Workflow"
+
+msgid "plugins.generic.restrictNavigation.setting.onlyAdmin"
+msgstr "Site Admin only"
