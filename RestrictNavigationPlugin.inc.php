@@ -82,7 +82,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
      * @return string
      */
     public function getDisplayName() {
-        return 'plugins.generic.restrictNavigation.displayName';
+        return __('plugins.generic.restrictNavigation.displayName');
     }
 
     /**
@@ -94,7 +94,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
     * @return string
     */
     public function getDescription() {
-        return 'plugins.generic.restrictNavigation.description';
+        return __('plugins.generic.restrictNavigation.description');
     }
 
 
