@@ -147,15 +147,15 @@ class RestrictNavigationPlugin extends GenericPlugin {
             }
             if ($workflow){
                 if (!$this->isUserAdmin($userRoles)) {
-                    unset($menu['settings']['workflow']);
+                    unset($menu['settings']['submenu']['workflow']);
                 }
             }
             if ($generalSettings){
                 if (!$this->isUserAdmin($userRoles)) {
-                    unset($menu['settings']['context']);
-                    unset($menu['settings']['website']);
-                    unset($menu['settings']['distribution']);
-                    unset($menu['settings']['access']);
+                    unset($menu['settings']['submenu']['context']);
+                    unset($menu['settings']['submenu']['website']);
+                    unset($menu['settings']['submenu']['distribution']);
+                    unset($menu['settings']['submenu']['access']);
                 }
             }
             $templateManager->setState(['menu' => $menu]);
