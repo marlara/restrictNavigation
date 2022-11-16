@@ -14,9 +14,9 @@
 
 import('lib.pkp.classes.template.PKPTemplateManager');
 import('lib.pkp.classes.plugins.GenericPlugin');
-import('lib.pkp.classes.security.Role');
-import('lib.pkp.classes.session.SessionManager');
-import('lib.pkp.classes.db.DAORegistry');
+#import('lib.pkp.classes.security.Role');
+#import('lib.pkp.classes.session.SessionManager');
+#import('lib.pkp.classes.db.DAORegistry');
 
 
 class RestrictNavigationPlugin extends GenericPlugin {
