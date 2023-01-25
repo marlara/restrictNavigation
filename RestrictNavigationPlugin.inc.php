@@ -14,9 +14,6 @@
 
 import('lib.pkp.classes.template.PKPTemplateManager');
 import('lib.pkp.classes.plugins.GenericPlugin');
-#import('lib.pkp.classes.security.Role');
-#import('lib.pkp.classes.session.SessionManager');
-#import('lib.pkp.classes.db.DAORegistry');
 
 
 class RestrictNavigationPlugin extends GenericPlugin {
@@ -136,7 +133,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
 
         $menu = (array) $templateManager->getState('menu'); #https://github.com/pkp/ops/blob/7a4563933cb965ddad2e2ac2cfab4da9f20ac7a2/pages/authorDashboard/AuthorDashboardHandler.php
         
-        $generalSettings = $this->getSetting($context->getId(), 'generalSettings'); #if geneeralSettings is checked in the Settings form
+        $generalSettings = $this->getSetting($context->getId(), 'generalSettings'); #if generalSettings is checked in the Settings form
         $tools = $this->getSetting($context->getId(), 'tools'); #if tools is checked in the Settings form
         $workflow = $this->getSetting($context->getId(), 'workflow'); #if workflow is checked in the Settings form
 
