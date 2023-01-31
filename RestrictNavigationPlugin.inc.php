@@ -23,7 +23,6 @@ class RestrictNavigationPlugin extends GenericPlugin {
 	public function register($category, $path, $mainContextId = NULL) {
 		$success = parent::register($category, $path, $mainContextId);
 		if ($success && $this->getEnabled($mainContextId)) {
-
 			HookRegistry::register('TemplateManager::setupBackendPage', [$this, 'restrictBackendPage']);
         }
 		return $success;
@@ -84,26 +83,26 @@ class RestrictNavigationPlugin extends GenericPlugin {
         public function manage($args, $request) {
             switch ($request->getUserVar('verb')) {
     
-          // Return a JSON response containing the
-          // settings form
-          case 'settings':
-            // Load the custom form
-            $this->import('RestrictNavigationSettingsForm');
-            $form = new RestrictNavigationSettingsForm($this);
+            // Return a JSON response containing the
+            // settings form
+            case 'settings':
+                // Load the custom form
+                $this->import('RestrictNavigationSettingsForm');
+                $form = new RestrictNavigationSettingsForm($this);
 
-            // Fetch the form the first time it loads, before
-            // the user has tried to save it
-            if (!$request->getUserVar('save')) {
-                    $form->initData();
-                    return new JSONMessage(true, $form->fetch($request));
+                // Fetch the form the first time it loads, before
+                // the user has tried to save it
+                if (!$request->getUserVar('save')) {
+                        $form->initData();
+                        return new JSONMessage(true, $form->fetch($request));
+                    }
+
+                // Validate and execute the form
+                $form->readInputData();
+                if ($form->validate()) {
+                    $form->execute();
+                    return new JSONMessage(true);
                 }
-
-            // Validate and execute the form
-            $form->readInputData();
-            if ($form->validate()) {
-                $form->execute();
-                return new JSONMessage(true);
-            }
 		}
 		return parent::manage($args, $request);
 	}
@@ -168,6 +167,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
         return false;
         }
 
+    
     /**
      * Provide a name for this plugin
      *
@@ -216,6 +216,27 @@ switch ($requestedPage){
         }
         break;
 }
+
+
+/***
+    * Change loadHandler 
+    
+
+    public function callbackHandleRestriction($hookName, $args){
+        $requestedPage = & $args[0];
+        $requestedOp = & $args[1];
+
+        if ($context){
+            if ($tools){
+                if (!$this->isUserAdmin($userRoles)) {
+                    if ($requestedPage == 'management' && $requestedOp == 'tools') {
+                        $request->redirectUrl(header('HTTP/1.1 401 Unauthorized'));
+                    }
+                }
+            }    
+        }
+    }
+
  * 
  * 
  */
