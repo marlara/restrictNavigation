@@ -22,7 +22,6 @@ class RestrictNavigationPlugin extends GenericPlugin {
 	public function register($category, $path, $mainContextId = NULL) {
 		$success = parent::register($category, $path, $mainContextId);
 		if ($success && $this->getEnabled($mainContextId)) {
-            HookRegistry::register('LoadHandler', [$this, 'callbackHandleRestriction']);
 			HookRegistry::register('TemplateManager::setupBackendPage', [$this, 'restrictBackendPage']);
         }
 		return $success;
@@ -122,7 +121,6 @@ class RestrictNavigationPlugin extends GenericPlugin {
 
         $request = Application::get()->getRequest();
         
-        #$currentUser = $request->getUser(); #https://docs.pkp.sfu.ca/dev/documentation/3.3/en/architecture-authentication
         $context = $request->getContext(); #https://docs.pkp.sfu.ca/dev/documentation/en/architecture
         $templateManager = TemplateManager::getManager($request);
 
@@ -136,20 +134,17 @@ class RestrictNavigationPlugin extends GenericPlugin {
         $tools = $this->getSetting($context->getId(), 'tools'); #if tools is checked in the Settings form
         $workflow = $this->getSetting($context->getId(), 'workflow'); #if workflow is checked in the Settings form
 
-        #$requestedPage = $this -> callbackHandleRestriction($hookName, $args);
 
         if ($context){
             if ($tools){
                 if (!$this->isUserAdmin($userRoles)) {
                     unset($menu['tools']);
-                    /*if ($requestedPage == 'requestedTools') {
-                        $request->redirect(header('HTTP/1.1 401 Unauthorized'));
-                    }*/
                 }
             }
             if ($workflow){
                 if (!$this->isUserAdmin($userRoles)) {
                     unset($menu['settings']['submenu']['workflow']);
+                    $request->redirect(null, 'manage', 'tools', 'submissions');
                 }
             }
             if ($generalSettings){
@@ -162,24 +157,12 @@ class RestrictNavigationPlugin extends GenericPlugin {
             }
             $templateManager->setState(['menu' => $menu]);
         }
-        
     }
-
-    /*
-    * Define loadHandler 
-    */
-
-    public function callbackHandleRestriction($hookName, $args){
-        $requestedPage = & $args[0];
-        $requestedOp = & $args[1];
-
-        if ($requestedPage == 'management' && $requestedOp == 'tools') {
-            if (!$this->isUserAdmin($userRoles)) {
-                echo 'requestedTools';
-            }
-        }
-    }    
+        
     
+
+    
+
     public function isUserAdmin($userRoles){
         if (in_array(ROLE_ID_SITE_ADMIN, $userRoles)) {
             return true;
@@ -216,44 +199,3 @@ class RestrictNavigationPlugin extends GenericPlugin {
 
 }
 
-/***
-change loadHandler function with this code:
-
-//Restric user to access some pages when the menu is removed
-switch ($requestedPage){
-    case 'management':
-        $blackListArgs = [
-            'context',
-            'website',
-            'workflow',
-            'distribution',
-            'access'
-        ];
-        if (
-            ($requestedOp == 'settings' && !empty(array_intersect($blackListArgs, $requestedArgs)))|| $requestedOp == 'tools'
-        ) {
-            $request -> directHome();
-        }
-        break;
-}
-
-
-/***
-    * Change loadHandler 
-    
-
-    public function callbackHandleRestriction($hookName, $args){
-        $requestedPage = & $args[0];
-        $requestedOp = & $args[1];
-
-        if ($requestedPage == 'management' && $requestedOp == 'tools') {
-            return 
-                    }
-                }
-            }    
-        }
-    }
-
- * 
- * 
- */
