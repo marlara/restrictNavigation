@@ -143,7 +143,7 @@ class RestrictNavigationPlugin extends GenericPlugin {
                 if (!$this->isUserAdmin($userRoles)) {
                     unset($menu['tools']);
                     if (strpos($url,'tools') !== false) {
-                        $request->redirect(null, 'submissions');
+                        $request->redirect(null, null, 'settings', 'announcements'); #redirect to announcements settings
                     }
                     
                 }
