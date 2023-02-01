@@ -135,16 +135,23 @@ class RestrictNavigationPlugin extends GenericPlugin {
         $workflow = $this->getSetting($context->getId(), 'workflow'); #if workflow is checked in the Settings form
 
 
+        $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']; #does it slow down the application?
+
+
         if ($context){
             if ($tools){
                 if (!$this->isUserAdmin($userRoles)) {
                     unset($menu['tools']);
+                    if (strpos($url,'tools') !== false) {
+                        $request->redirect(null, 'submissions');
+                    }
+                    
                 }
             }
             if ($workflow){
                 if (!$this->isUserAdmin($userRoles)) {
                     unset($menu['settings']['submenu']['workflow']);
-                    $request->redirect(null, 'manage', 'tools', 'submissions');
+                    
                 }
             }
             if ($generalSettings){
