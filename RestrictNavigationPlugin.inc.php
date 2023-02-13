@@ -151,7 +151,9 @@ class RestrictNavigationPlugin extends GenericPlugin {
             if ($workflow){
                 if (!$this->isUserAdmin($userRoles)) {
                     unset($menu['settings']['submenu']['workflow']);
-                    
+                    if (strpos($url,'workflow') !== false) {
+                        $request->redirect(null, null, 'settings', 'announcements'); #redirect to announcements settings
+                    }
                 }
             }
             if ($generalSettings){

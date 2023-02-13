@@ -30,11 +30,8 @@ describe('Restrict Navigation plugin tests', function() {
         cy.logout();
         cy.login('rvaca', 'rvacarvaca', 'publicknowledge');
 
-        //Check for an unauthorized 
-
-
-		// Check for a 404 on the page we are about to create
+        // Check the redirect to work
 		cy.visit('/index.php/publicknowledge/management/tools', {failOnStatusCode: false});
-		cy.get('h1:contains("401")');
+		cy.location('/index.php/publicknowledge/management/tools').should('eq', '/index.php/publicknowledge/settings/announcements')
 	});
 })
