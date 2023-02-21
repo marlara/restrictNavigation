@@ -38,12 +38,12 @@ install:
   - lib/pkp/tools/travis/install-composer-dependencies.sh
   - npm i g -npm && npm install && npm run build
   # Make sure we're using the current checkout of this repo rather than the built-in OJS/OMP version
-  - rm -rf ~/${APPLICATION}/plugins/generic/staticPages
-  - ln -s ${TRAVIS_BUILD_DIR} ~/${APPLICATION}/plugins/generic/staticPages
+  - rm -rf ~/${APPLICATION}/plugins/generic/restrictNavigation
+  - ln -s ${TRAVIS_BUILD_DIR} ~/${APPLICATION}/plugins/generic/restrictNavigation
 
 script:
   - $(npm bin)/cypress run --spec "cypress/tests/data/10-ApplicationSetup/10-Installation.cy.js,cypress/tests/data/10-ApplicationSetup/20-CreateContext.cy.js"
-  - $(npm bin)/cypress run --config '{"specPattern":["plugins/generic/staticPages/cypress/tests/functional/*.cy.js"]}'
+  - $(npm bin)/cypress run --config '{"specPattern":["plugins/generic/restrictNavigation/cypress/tests/functional/*.cy.js"]}'
 
 after_failure:
   - cat error.log
