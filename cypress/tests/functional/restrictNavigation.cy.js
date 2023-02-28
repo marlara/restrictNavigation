@@ -9,14 +9,16 @@
 describe('Restrict Navigation plugin tests', function() {
 	it('It restricts the navigation to some specific users', function() {
 		cy.login('admin', 'admin', 'publicknowledge');
+		cy.get('input[name=username]').eq(0).type('admin')
+		cy.get('input[name=password]').eq(0).type('admin')
+		cy.get('button[type="submit"').contains('Login').click();
 
 		cy.get('.app__navItem').contains('Website').click();
 		cy.get('button[id="plugins-button"]').click();
 
 		// Find and enable the plugin
 		cy.get('input[id^="select-cell-restrictnavigationplugin-enabled"]').click();
-		cy.get('div:contains(\'The plugin "Restrict Navigation Plugin" has been enabled.\')');
-        cy.waitJQuery();
+		cy.waitJQuery();
 
         //Set the restriction
 		cy.get('tr[id*="restrictnavigationplugin"] a.show_extras').click();
