@@ -10,7 +10,7 @@ describe('Restrict Navigation plugin tests', function() {
 	it('It restricts the navigation to some specific users', function() {
 		cy.login('admin', 'admin', 'publicknowledge');
 
-		cy.get('.app__nav a').contains('Website').click();
+		cy.get('.app__navItem').contains('Website').click();
 		cy.get('button[id="plugins-button"]').click();
 
 		// Find and enable the plugin
