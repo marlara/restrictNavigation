@@ -162,6 +162,9 @@ class RestrictNavigationPlugin extends GenericPlugin {
                     unset($menu['settings']['submenu']['website']);
                     unset($menu['settings']['submenu']['distribution']);
                     unset($menu['settings']['submenu']['access']);
+                    if (strpos($url,'context') !== false || strpos($url,'website') !== false || strpos($url,'distribution') !== false || strpos($url,'access') !== false) {
+                        $request->redirect(null, null, 'settings', 'announcements'); #redirect to announcements settings
+                    }
                 }
             }
             $templateManager->setState(['menu' => $menu]);
