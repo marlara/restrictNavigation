@@ -11,8 +11,8 @@
 <version>
 	<application>restrictNavigation</application>
 	<type>plugins.generic</type>
-	<release>0.1.0.0</release>
-	<date>2022-10-08</date>
+	<release>1.0.0.0</release>
+	<date>2022-03-01</date>
 	<lazy-load>1</lazy-load>
 	<class>RestrictNavigationPlugin</class>
 </version>
