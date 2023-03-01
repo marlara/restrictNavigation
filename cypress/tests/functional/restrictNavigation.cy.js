@@ -31,9 +31,12 @@ describe('Restrict Navigation plugin tests', function() {
         //Logout as admin and login as Journal Manager (see https://github.com/pkp/ojs/blob/main/cypress/tests/data/10-ApplicationSetup/40-CreateUsers.cy.js)
         cy.logout();
         cy.login('rvaca', 'rvacarvaca', 'publicknowledge');
+		cy.get('input[name=username]').eq(0).type('rvaca')
+		cy.get('input[name=password]').eq(0).type('rvacarvaca')
+		cy.get('button[type="submit"').contains('Login').click();
 
         // Check the redirect to work
-		cy.visit('/index.php/publicknowledge/management/tools', {failOnStatusCode: false});
-		cy.location('/index.php/publicknowledge/management/tools').should('eq', '/index.php/publicknowledge/settings/announcements')
+		cy.visit('http://localhost/index.php/publicknowledge/management/tools', {failOnStatusCode: false}); //need to change the localhost with the right baseurl
+		cy.location('/index.php/publicknowledge/management/tools').should('eq', '/index.php/publicknowledge/management/settings/announcements')
 	});
 })
